@@ -28,6 +28,9 @@ PIPELINE_KEY = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
 def auth(request, backend):
     """Start authentication process"""
     platform = request.GET.get('platform')
+    from django.contrib.auth.models import AnonymousUser
+    request.session.flush()
+    request.user = AnonymousUser()
     if platform:
         request.session['is_app'] = platform
     return auth_process(request, backend)
