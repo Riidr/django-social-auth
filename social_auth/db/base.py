@@ -191,7 +191,8 @@ class UserSocialAuthMixin(object):
     def create_social_auth(cls, user, uid, provider):
         if not isinstance(uid, basestring):
             uid = str(uid)
-        return cls.objects.create(user=user, uid=uid, provider=provider)
+        social, created = cls.objects.get_or_create(provider=provider, user=user, defaults={'uid': uid})
+        return social
 
     @classmethod
     def store_association(cls, server_url, association):
