@@ -12,6 +12,7 @@ from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import AnonymousUser
 
 from social_auth.utils import sanitize_redirect, setting, \
                               backend_setting, clean_partial_pipeline
@@ -28,7 +29,6 @@ PIPELINE_KEY = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
 def auth(request, backend):
     """Start authentication process"""
     platform = request.GET.get('platform')
-    from django.contrib.auth.models import AnonymousUser
     request.session.flush()
     request.user = AnonymousUser()
     if platform:
