@@ -38,10 +38,11 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
     provider = models.CharField(max_length=32)
     uid = models.CharField(max_length=UID_LENGTH)
     extra_data = JSONField(default='{}')
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         """Meta data"""
-        unique_together = ('provider', 'uid')
+        unique_together = (('provider', 'uid'), ('provider', 'user'))
         app_label = 'social_auth'
 
     @classmethod
