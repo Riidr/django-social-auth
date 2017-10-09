@@ -12,7 +12,7 @@ from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import AnonymousUser
+# from django.contrib.auth.models import AnonymousUser
 
 from social_auth.utils import sanitize_redirect, setting, \
                               backend_setting, clean_partial_pipeline
@@ -29,8 +29,14 @@ PIPELINE_KEY = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
 def auth(request, backend):
     """Start authentication process"""
     platform = request.GET.get('platform')
-    request.session.flush()
-    request.user = AnonymousUser()
+
+    # Commenting this, as it was messing with the post-signup redirect
+    # Not sure what it does, as there was no comment and the commit message was
+    # unhelpful.
+    # Originally added in: f83f7cfe8a3980a88a02b46cc6bc21b7692c22d0
+    # request.session.flush()
+    # request.user = AnonymousUser()
+
     if platform:
         request.session['is_app'] = platform
     return auth_process(request, backend)
